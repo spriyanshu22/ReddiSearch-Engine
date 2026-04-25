@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en"> 
+<head>
+    <meta charset="UTF-8">
+    <title>YARP Engine | Realtime News</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .badge-sub { font-size: 0.75rem; background-color: #ff4500; color: white; }
+        .score-box { font-weight: bold; color: #555; }
+    </style>
+</head>
+<body class="bg-light">
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h1 class="display-4 fw-bold">YARP ENGINE</h1>
+            <p class="lead">Yet Another Realtime Parser: Reddit Health News</p>
+        </div>
+
+        <div class="row justify-content-center mb-4">
+            <div class="col-md-8">
+                <form action="/" method="GET" class="input-group input-group-lg shadow-sm">
+                    <input type="text" name="q" class="form-control" placeholder="Search COVID news (e.g. 'vaccine', 'update')..." value="{{ query or '' }}">
+                    <button class="btn btn-primary" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="list-group shadow-sm">
+                    {% for row in results %}
+                    <a href="{{ row[2] }}" target="_blank" class="list-group-item list-group-item-action p-3">
+                        <div class="d-flex w-100 justify-content-between align-items-center">
+                            <h5 class="mb-1 text-primary">{{ row[0] }}</h5>
+                            <span class="score-box">↑ {{ row[3] }}</span>
+                        </div>
+                        <span class="badge badge-sub">r/{{ row[1] }}</span>
+                    </a>
+                    {% else %}
+                    <div class="text-center p-5">
+                        <p class="text-muted">No records found. Try running the scraper!</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

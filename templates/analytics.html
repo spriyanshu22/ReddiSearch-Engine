@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YARP Engine — Analytics</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background: #0f1117; color: #e0e0e0; font-family: 'Inter', sans-serif; }
+        .stat-card { background: #1a1d2e; border: 1px solid #2d3050; border-radius: 12px; padding: 24px; }
+        .stat-number { font-size: 2.5rem; font-weight: 700; color: #7c83ff; }
+        .stat-label  { font-size: 0.85rem; color: #888; letter-spacing: 0.05em; text-transform: uppercase; }
+        .table-dark   { background: #1a1d2e; }
+        .badge-rank   { background: #7c83ff22; color: #7c83ff; border: 1px solid #7c83ff44; }
+        h1            { color: #fff; font-weight: 700; }
+        .nav-link     { color: #aaa !important; }
+        .nav-link:hover { color: #7c83ff !important; }
+    </style>
+</head>
+<body>
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <div>
+            <h1>📊 YARP Analytics</h1>
+            <p class="text-muted mb-0">Search engine intelligence dashboard</p>
+        </div>
+        <a href="/" class="btn btn-outline-secondary">← Back to Search</a>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <div class="stat-card text-center">
+                <div class="stat-number">{{ total_searches }}</div>
+                <div class="stat-label">Total Searches</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stat-card text-center">
+                <div class="stat-number">{{ total_posts }}</div>
+                <div class="stat-label">Posts Indexed</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stat-card text-center">
+                <div class="stat-number">{{ total_terms }}</div>
+                <div class="stat-label">Unique Terms in Index</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Top Queries -->
+        <div class="col-md-6">
+            <div class="stat-card h-100">
+                <h5 class="mb-4">🔥 Top 10 Searches</h5>
+                {% if top_queries %}
+                <table class="table table-dark table-borderless">
+                    <thead><tr>
+                        <th>#</th><th>Query</th><th>Searches</th><th>Avg Results</th>
+                    </tr></thead>
+                    <tbody>
+                    {% for query, count, avg_res in top_queries %}
+                    <tr>
+                        <td><span class="badge badge-rank">{{ loop.index }}</span></td>
+                        <td><a href="/?q={{ query }}" class="text-decoration-none" style="color:#7c83ff">{{ query }}</a></td>
+                        <td>{{ count }}</td>
+                        <td>{{ avg_res }}</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <p class="text-muted">No searches logged yet. Try searching something!</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Recent Searches -->
+        <div class="col-md-6">
+            <div class="stat-card h-100">
+                <h5 class="mb-4">🕐 Recent Searches</h5>
+                {% if recent %}
+                <table class="table table-dark table-borderless">
+                    <thead><tr>
+                        <th>Query</th><th>Results</th><th>When</th>
+                    </tr></thead>
+                    <tbody>
+                    {% for query, count, ts in recent %}
+                    <tr>
+                        <td><a href="/?q={{ query }}" class="text-decoration-none" style="color:#9ca3ff">{{ query }}</a></td>
+                        <td>{{ count }}</td>
+                        <td class="text-muted" style="font-size:0.8rem">{{ ts.strftime('%H:%M:%S') }}</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <p class="text-muted">No search history yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
